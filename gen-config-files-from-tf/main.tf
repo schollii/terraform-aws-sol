@@ -18,9 +18,9 @@ locals {
         dest = (
           var.k8s_ns == "**" ?
           // common to all namespaces:
-          "${path}/${var.stack_id}/${tf_name}" :
+          "${path}/stacks/${var.stack_id}/${tf_name}" :
           // for specific namespace:
-          "${path}/${var.stack_id}/${var.k8s_ns}/${tf_name}"
+          "${path}/stacks/${var.stack_id}/${var.k8s_ns}/${tf_name}"
         )
       }
     ]
@@ -32,7 +32,7 @@ locals {
     for path in var.deployment_roots : [
       for tf_name in fileset("${path}/_templates_", "${var.stack_id}/${var.k8s_ns}/${var.tpl_auto}-${var.tpl_name}") : {
         source = "${path}/_templates_/${tf_name}"
-        dest   = "${path}/${dirname(tf_name)}/${basename(tf_name)}"
+        dest   = "${path}/stacks/${dirname(tf_name)}/${basename(tf_name)}"
       }
     ]
   ]
